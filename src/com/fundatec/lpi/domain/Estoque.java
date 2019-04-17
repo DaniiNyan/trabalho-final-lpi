@@ -19,8 +19,10 @@ public class Estoque {
 	}
 
 	public float custoTotal(List<Item> itens) {
-		// calcula custom total
+		// calcula custo total
 		float valorTotal = 0;
+		
+		
 
 		return valorTotal;
 	}

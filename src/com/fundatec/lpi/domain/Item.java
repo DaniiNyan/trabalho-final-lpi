@@ -13,6 +13,12 @@ public class Item {
 	public Item() {
 	}
 
+	public Item(int idOriginal, String novoNome, float novoPreco) {
+		this.id = idOriginal;
+		this.nome = novoNome;
+		this.preco = novoPreco;
+	}
+
 	public String getNome() {
 		return nome;
 	}

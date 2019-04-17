@@ -12,13 +12,6 @@ public class App {
 		int comando = 0;
 
 		do {
-			/*
-			 * Sistema de Estoque - Escolha uma opção:
-			 * --------------------------------------- 1 - Cadastro de item 2 - Listar items
-			 * 3 - Editar item por ID 4 - Excluir item por ID 5 - Mostrar custo total do
-			 * estoque 0 - Sair Qual opção?
-			 */
-
 			System.out.println("Sistema de Estoque - Escolha uma opção:");
 			System.out.println("---------------------------------------");
 			System.out.println("1 - Cadastro de item");
@@ -63,24 +56,20 @@ public class App {
 				case 3: {
 					System.out.println("Você escolheu editar item.");
 					System.out.println("=> ID: ");
-					int id = teclado.nextInt();
-					//pocurar se item existe?
+					int idOriginal = teclado.nextInt();
 					
 					System.out.println("=> NOME: ");
-					String nome = teclado.next();
+					String novoNome = teclado.next();
 	
 					System.out.println("=> PREÇO: ");
-					float preco = teclado.nextFloat();
+					float novoPreco = teclado.nextFloat();
 	
-					Item item = new Item(nome, preco);
+					Item item = new Item(idOriginal, novoNome, novoPreco);
 					ItemDAO itemDAO = new ItemDAO();
-					//itemDAO.update(item);
+					itemDAO.update(item);
 					
-					
-					System.out.println("Editado com sucesso!");
 					System.out.println("---------------------------------------");
 					break;
-					
 					
 				}
 				
@@ -89,9 +78,9 @@ public class App {
 					System.out.println("=> ID: ");
 					int id = teclado.nextInt();
 					
-					//Procurar item e depois deletar?
+					ItemDAO itemDAO = new ItemDAO();
+					itemDAO.delete(id);
 					
-					System.out.println("Excluído com sucesso!");
 					System.out.println("---------------------------------------");
 					
 					break;
@@ -103,9 +92,17 @@ public class App {
 					break;
 				}
 				
+				case 0: {
+					System.out.println("---------------------------------------");
+					System.out.println("Você saiu.");
+					
+					break;
+				}
+				
 				default: {
 					System.out.println("Você não digitou um comando válido.");
 					System.out.println("---------------------------------------");
+					break;
 				}
 					
 			}
@@ -113,6 +110,5 @@ public class App {
 		} while (comando != 0);
 
 		teclado.close();
-		System.out.println("Você saiu.");
 	}
 }
