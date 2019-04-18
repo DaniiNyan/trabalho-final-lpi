@@ -4,8 +4,20 @@ public class CapitalizaNome implements TransformadorNome{
 
 	@Override
 	public String transforma(String nome) {
-		// TODO Auto-generated method stub
-		return null;
+		String nomeTransformado = "";
+		
+		for (int i = 0; i < nome.length(); i++) {
+			char letraAtual = nome.charAt(i);			
+			
+			if (i == 0) {
+				nomeTransformado += Character.toUpperCase(letraAtual);
+				
+			} else {
+				nomeTransformado += Character.toLowerCase(letraAtual);
+			}
+		}
+		
+		return nomeTransformado;
 	}
 
 }

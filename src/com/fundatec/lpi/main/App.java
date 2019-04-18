@@ -1,10 +1,12 @@
 package com.fundatec.lpi.main;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.fundatec.lpi.dao.ItemDAO;
+import com.fundatec.lpi.domain.Estoque;
 import com.fundatec.lpi.domain.Item;
-import com.fundatec.lpi.services.ImprimeLista;
+import com.fundatec.lpi.services.CapitalizaNome;
 
 public class App {
 	public static void main(String[] args) {
@@ -32,8 +34,11 @@ public class App {
 	
 					System.out.println("=> PREÇO: ");
 					float preco = teclado.nextFloat();
+					
+					CapitalizaNome capitalizaNome = new CapitalizaNome();
+					String nomeCapitalizado = capitalizaNome.transforma(nome);
 	
-					Item item = new Item(nome, preco);
+					Item item = new Item(nomeCapitalizado, preco);
 					ItemDAO itemDAO = new ItemDAO();
 					itemDAO.save(item);
 					
@@ -46,8 +51,16 @@ public class App {
 					System.out.println("Você escolheu listar itens.");
 					
 					ItemDAO itemDAO = new ItemDAO();
-					ImprimeLista imprimir = new ImprimeLista();
-					imprimir.imprime(itemDAO.listAll());
+					List<Item> listaItens = itemDAO.listAll();
+					
+					for (Item item : listaItens) {
+						int id = item.getId();
+						String nome = item.getNome();
+						float preco = item.getPreco();
+						System.out.format("%s - %s - %s\n", id, nome, preco);
+					}
+					
+					
 					
 					System.out.println("---------------------------------------");
 					break;
@@ -88,6 +101,14 @@ public class App {
 				
 				case 5: {
 					System.out.println("Custo total do estoque:");
+					
+					ItemDAO itemDAO = new ItemDAO();
+					List<Item> listaItens = itemDAO.listAll();
+					
+					Estoque estoque = new Estoque();							
+					System.out.println(estoque.custoTotal(listaItens));			
+					
+					
 					System.out.println("---------------------------------------");
 					break;
 				}

@@ -3,26 +3,16 @@ package com.fundatec.lpi.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fundatec.lpi.dao.ItemDAO;
+
 public class Estoque {
-	private List<Item> estoque = new ArrayList<Item>();
-
-	public Estoque(List<Item> estoque) {
-		this.estoque = estoque;
-	}
-
-	public List<Item> getEstoque() {
-		return estoque;
-	}
-
-	public void setEstoque(List<Item> estoque) {
-		this.estoque = estoque;
-	}
 
 	public float custoTotal(List<Item> itens) {
-		// calcula custo total
 		float valorTotal = 0;
 		
-		
+		for (Item item : itens) {
+			valorTotal += item.getPreco();
+		}		
 
 		return valorTotal;
 	}

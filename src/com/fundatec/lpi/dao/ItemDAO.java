@@ -52,12 +52,13 @@ public class ItemDAO implements BaseDAO<Item>{
 			
 			ResultSet resultSet = statement.executeQuery(query);
 			
-			while (resultSet.next()) {
+			while (resultSet.next()) {				
 				int id = resultSet.getInt("id");
 				String nome = resultSet.getString("nome");
 				float preco = resultSet.getFloat("preco");
 				
-				System.out.format("%s - %s - %s\n", id, nome, preco);
+				Item item = new Item(id, nome, preco);
+				resultado.add(item);
 			}			
 			
 		} catch (Exception e) {
