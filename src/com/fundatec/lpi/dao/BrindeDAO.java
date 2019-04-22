@@ -8,12 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fundatec.lpi.domain.Item;
+import com.fundatec.lpi.domain.Brinde;
 
-public class ItemDAO implements BaseDAO<Item>{
-	
+public class BrindeDAO implements BaseDAO<Brinde>{
+
 	@Override
-	public void save(Item item) {
+	public void save(Brinde brinde) {
 		try {
 			String mysqlDriver = "com.mysql.cj.jdbc.Driver"; 
 			Class.forName(mysqlDriver);
@@ -21,23 +21,30 @@ public class ItemDAO implements BaseDAO<Item>{
 			String connectionString = "jdbc:mysql://localhost/trabalho-final?user=root&password=";
 			Connection connect = DriverManager.getConnection(connectionString);
 
-			String query = "INSERT INTO ITENS (NOME, PRECO) VALUES (?, ?)";
+			String query = "INSERT INTO BRINDES (NOME, ITEM_ID) VALUES (?, ?)";
 			
 			PreparedStatement preparedStmt = connect.prepareStatement(query);
-		    preparedStmt.setString (1, item.getNome());
-		    preparedStmt.setFloat(2, item.getPreco());
-		    preparedStmt.execute();			    
+		    preparedStmt.setString (1, brinde.getNome());
+		    preparedStmt.setInt(2, brinde.getItemID());
+		    preparedStmt.execute();
+		    
+		    int linhasAfetadas = preparedStmt.getUpdateCount();
+		    if (linhasAfetadas < 1) {
+		    	System.out.println("Id inválido.");
+		    } else {
+		    	System.out.println("Cadastrado com sucesso!");
+		    }
 		    
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Algo deu errado, tente novamente.");
 		}
 		
 	}
 
 	@Override
-	public List<Item> listAll() {
-		List<Item> resultado = new ArrayList<Item>();
+	public List<Brinde> listAll() {
+		List<Brinde> resultado = new ArrayList<Brinde>();
 		
 		try {
 			String mysqlDriver = "com.mysql.cj.jdbc.Driver"; 
@@ -47,21 +54,21 @@ public class ItemDAO implements BaseDAO<Item>{
 			Connection connect = DriverManager.getConnection(connectionString);
 			
 			Statement statement = connect.createStatement();
-			String query = "SELECT * FROM ITENS";
+			String query = "SELECT * FROM BRINDES";
 			
 			ResultSet resultSet = statement.executeQuery(query);
 			
 			while (resultSet.next()) {				
 				int id = resultSet.getInt("id");
 				String nome = resultSet.getString("nome");
-				float preco = resultSet.getFloat("preco");
+				int itemID = resultSet.getInt("item_id");
 				
-				Item item = new Item(id, nome, preco);
-				resultado.add(item);
+				Brinde brinde = new Brinde(id, nome, itemID);
+				resultado.add(brinde);
 			}			
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Algo deu errado, tente novamente.");
 		}
 		
 		return resultado;
@@ -76,31 +83,27 @@ public class ItemDAO implements BaseDAO<Item>{
 			String connectionString = "jdbc:mysql://localhost/trabalho-final?user=root&password=";
 			Connection connect = DriverManager.getConnection(connectionString);
 			
-			String queryBrinde = "DELETE FROM BRINDES WHERE ITEM_ID = " + id + ";";
+			String query = "DELETE FROM BRINDES WHERE ID = " + id + ";";
 			
-			PreparedStatement preparedStmt = connect.prepareStatement(queryBrinde);
-			preparedStmt.execute();			
-		    
-		    String query = "DELETE FROM ITENS WHERE ID = " + id + ";";
-		    preparedStmt = connect.prepareStatement(query);
-		    preparedStmt.execute();
-		    
-		    int linhasAfetadas = preparedStmt.getUpdateCount();
+			PreparedStatement preparedStmt = connect.prepareStatement(query);
+			preparedStmt.execute();
+			
+			int linhasAfetadas = preparedStmt.getUpdateCount();
 		    if (linhasAfetadas < 1) {
 		    	System.out.println("Id inválido.");
 		    } else {
 		    	System.out.println("Deletado com sucesso!");
-		    }
+		    }   
 			
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Algo deu errado, tente novamente.");
 		}
 		
 	}
 
 	@Override
-	public void update(Item item) {
+	public void update(Brinde brinde) {
 		try {
 			String mysqlDriver = "com.mysql.cj.jdbc.Driver"; 
 			Class.forName(mysqlDriver);
@@ -108,12 +111,12 @@ public class ItemDAO implements BaseDAO<Item>{
 			String connectionString = "jdbc:mysql://localhost/trabalho-final?user=root&password=";
 			Connection connect = DriverManager.getConnection(connectionString);
 			
-			String query = "UPDATE ITENS SET NOME = ?, PRECO = ? WHERE ID = ?;";
+			String query = "UPDATE BRINDES SET NOME = ?, ITEM_ID = ? WHERE ID = ?;";
 			
 			PreparedStatement preparedStmt = connect.prepareStatement(query);
-			preparedStmt.setString (1, item.getNome());
-		    preparedStmt.setFloat(2, item.getPreco());
-		    preparedStmt.setInt(3, item.getId());
+			preparedStmt.setString (1, brinde.getNome());
+		    preparedStmt.setInt(2, brinde.getItemID());	
+		    preparedStmt.setInt(3, brinde.getId());
 		    preparedStmt.execute();
 		    
 		    int linhasAfetadas = preparedStmt.getUpdateCount();
@@ -124,9 +127,8 @@ public class ItemDAO implements BaseDAO<Item>{
 		    }
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Algo deu errado, tente novamente.");
 		}
-		
 	}
 
 }
